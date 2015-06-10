@@ -120,6 +120,7 @@ filetype indent on    "允许使用indent目录下的文件类型缩进
 
 "" 设置配色
 set t_Co=256
+let g:solarized_termcolors=256
 set background=dark
 colorscheme solarized  "inkpot solarized blackboard molokai tango vividchalk desertEx wombat256mod desert murphy
 
@@ -129,7 +130,7 @@ let g:airline#extensions#tabline#enabled = 1
 "" 设置字体"
 if has("win32")
     set guifont=Dejavu\ sans\ mono:h10:cANSI
-    "set gfw=simsun:h10:cGB2312
+    set gfw=youyuan:h10:cGB2312
 else
     set guifont=Dejavu\ sans\ mono\ 10.5
 "    set guifont=monaco\ 10.5
