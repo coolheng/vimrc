@@ -22,6 +22,7 @@ if has("win32")
 else
     set rtp+=~/.vim/bundle/vundle
 endif
+
 call vundle#begin()
 " vim-scripts repos
 Bundle 'gmarik/vundle'
@@ -56,11 +57,13 @@ Bundle 'tpope/vim-vividchalk.git'
 Bundle 'tomasr/molokai.git'
 Bundle 'blackboard.vim'
 Bundle 'vim-scripts/tango.vim.git'
+"Bundle 'Guardian'
 "Bundle 'blackboard'
 Bundle 'solarized'
 Bundle 'inkpot'
 Bundle 'chriskempson/tomorrow-theme'
 "Bundle 'Lokaltog/vim-distinguished'
+Bundle 'Suave/vim-colors-guardian'
 "其他
 "Bundle 'L9'
 "Bundle 'FuzzyFinder'
@@ -115,7 +118,7 @@ filetype indent on    "允许使用indent目录下的文件类型缩进
 
 "" 设置配色
 set t_co=256
-colorscheme blackboard "inkpot solarized blackboard molokai tango vividchalk desertEx wombat256mod desert murphy
+colorscheme desert  "inkpot solarized blackboard molokai tango vividchalk desertEx wombat256mod desert murphy
 
 ""状态栏配色 airline"
 let g:airline#extensions#tabline#enabled = 1
@@ -153,6 +156,8 @@ else
     map <silent> <leader>e :e ~/.vimrc<cr>
     autocmd! bufwritepost .vimrc source %
 endif
+
+
 
 "##################################
 "#""""""""""" 编码设置 """""""""""#
