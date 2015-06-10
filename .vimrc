@@ -53,17 +53,19 @@ Bundle 'chrisbra/color_highlight'
 "状态栏配色
 Bundle 'bling/vim-airline'
 "配色
-Bundle 'tpope/vim-vividchalk.git'
+"Bundle 'tpope/vim-vividchalk.git'
 Bundle 'tomasr/molokai.git'
-Bundle 'blackboard.vim'
-Bundle 'vim-scripts/tango.vim.git'
+Bundle 'desertEx'
+"Bundle 'blackboard.vim'
+"Bundle 'vim-scripts/tango.vim.git'
 "Bundle 'Guardian'
 "Bundle 'blackboard'
-Bundle 'solarized'
-Bundle 'inkpot'
-Bundle 'chriskempson/tomorrow-theme'
+Bundle 'altercation/vim-colors-solarized.git'
+"Bundle 'inkpot'
+"Bundle 'chriskempson/tomorrow-theme'
 "Bundle 'Lokaltog/vim-distinguished'
-Bundle 'Suave/vim-colors-guardian'
+"Bundle 'Suave/vim-colors-guardian'
+
 "其他
 "Bundle 'L9'
 "Bundle 'FuzzyFinder'
@@ -111,14 +113,15 @@ set ignorecase  "搜索时忽略大小写
 au BufNewFile, BufRead *.inc,*.module set filetype=php  "绑定.inc为php文件
 set laststatus=2    "始终显示状态栏,高度为2行
 syntax enable
-syntax on
+"syntax on
 filetype on
 filetype plugin on    "允许使用ftplugin目录下的文件类型特定脚本
 filetype indent on    "允许使用indent目录下的文件类型缩进
 
 "" 设置配色
-set t_co=256
-colorscheme desert  "inkpot solarized blackboard molokai tango vividchalk desertEx wombat256mod desert murphy
+set t_Co=256
+set background=dark
+colorscheme solarized  "inkpot solarized blackboard molokai tango vividchalk desertEx wombat256mod desert murphy
 
 ""状态栏配色 airline"
 let g:airline#extensions#tabline#enabled = 1
