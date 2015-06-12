@@ -196,7 +196,7 @@ nmap <leader>w :w<cr>
 
 if has("win32")
     map <silent> <leader>e :e $VIM/_vimrc<cr>
-    autocmd! bufwritepost _vimrc source %   "自动调用新的vimrc
+    autocmd! bufwritepost .vimrc source %   "自动调用新的vimrc
 else
     map <silent> <leader>e :e ~/.vimrc<cr>
     autocmd! bufwritepost .vimrc source %
@@ -258,15 +258,20 @@ map <right> :tabn<cr>
 let g:airline#extensions#tabline#buffer_idx_mode = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme='solarized'
-if has("unix")
-  let g:airline_left_sep = ''
-  let g:airline_left_alt_sep = ''
-  let g:airline_right_sep = ''
-  let g:airline_right_alt_sep = ''
-  let g:airline_symbols.branch = ''
-  let g:airline_symbols.readonly = ''
-  let g:airline_symbols.linenr = ''
-endif
+autocmd! bufwritepost .vimrc  AirlineRefresh
+let g:airline_powerline_fonts=1
+"if !exists('g:airline_symbols')
+"    let g:airline_symbols = {}
+"endif
+"if has("unix")
+"  let g:airline_left_sep = ''
+"  let g:airline_left_alt_sep = ''
+"  let g:airline_right_sep = ''
+"  let g:airline_right_alt_sep = ''
+"  let g:airline_symbols.branch = ''
+"  let g:airline_symbols.readonly = ''
+"  let g:airline_symbols.linenr = ''
+"endif
 
 "###################################
 "############# nerd_tree ###########
