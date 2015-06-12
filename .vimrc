@@ -1,23 +1,29 @@
 """"""""""""" Hotkey """""""""""""#
-"<F4>:               NERDTreeToggle<CR>
-"<F8>:               BufExplorer<CR>
-"<F9>:               TagbarToggle<CR>
-"<F11>:              YRShow<CR> 剪切板
-"<F12>:              GundoToggle<CR> 撤销持久化
-"<leader>f:          MRU 最近打开的文件
-",,:                 CtrlP 停用
+"<F4>:          NERDTreeToggle<CR>
+"<F8>:          BufExplorer<CR>
+"<F9>:          TagbarToggle<CR>
+"<F11>:         YRShow<CR> 剪切板
+"<F12>:         UndotreeToggle<CR> 撤销持久化
+"<leader>f:     MRU 最近打开的文件
+",,:            CtrlP 停用
 
 "ctrlp快捷键
-"<c-f> <c-b> 切换模式
-"<c-d>       切换按全路径或文件名查找
-"<c-r>       改变regexp模式
-"<c-j> <c-k> 下一个/上一个文件
-"<c-t>       新tab打开文件
-"<c-v> <c-x> 新split打开文件
-"<c-n> <c-p> 上一个或下一个查找
-"<c-y>       创建新文件和他的父目录
-"<c-z>       标记文件
-"<c-o>       打开标记文件
+"<c-f><c-b>     切换模式
+"<c-d>          切换按全路径或文件名查找
+"<c-r>          改变regexp模式
+"<c-j><c-k>     下一个/上一个文件
+"<c-t>          新tab打开文件
+"<c-v><c-x>     新split打开文件
+"<c-n><c-p>     上一个或下一个查找
+"<c-y>          创建新文件和他的父目录
+"<c-z>          标记文件
+"<c-o>          打开标记文件
+
+"Nerdcommenter
+"<Leader>cc     最基本注释
+"<Leader>cu     撤销注释
+"<Leader>cm     多行注释
+"<Leader>cs     性感的注释方式
 
 set nocompatible               " 关闭兼容模式
 "####################################
@@ -52,10 +58,11 @@ Bundle 'matchit.zip'
 "快速删除配对标签
 Bundle 'tpope/vim-surround.git'
 "撤销持久化
-Bundle 'sjl/Gundo.vim.git'
+"Bundle 'sjl/Gundo.vim.git'
+Bundle 'mbbill/undotree'
 "自动保存
 Bundle '907th/vim-auto-save.git'
-"Bundle 'kien/ctrlp.vim'
+Bundle 'kien/ctrlp.vim'
 Bundle 'Shougo/unite.vim'
 "Bundle 'Shougo/neomru.vim'
 "Bundle 'yegappan/mru.git'
@@ -103,29 +110,33 @@ if has("gui_running")
     set guioptions-=R
 endif
 
-set sessionoptions+=resize    "保存窗口大小
-set autoread        "设置自动读取文件当外部文件被修改时
-set nobackup        "取消备份
-set completeopt=longest,menu    "关闭智能补全时的预览窗口，这样可以防止闪屏现象
-set mouse=a         "设置鼠标支持
-set autochdir       "自动切换当前目录为当前文件夹所在的目录
-set bsdir=buffer    "设定文件浏览器目录为当前目录
-set ruler           "状态标尺，显示当前光标位置的行号、列号，对应的整个文件的百分比
-set scrolloff=5     "设定光标离窗口上下边界5行时窗口自动滚动
-set keywordprg=sdcv "英文查询词典
-set cmdheight=1     "设置命令行高度为2行
-set cursorline      "高亮显示当前行
-set cursorcolumn    "设置光标列;高亮光标所在列
-set number          "显示行号
-set wildmenu        "命令行补全
-set showmatch       "插入括号时短暂跳转到匹配的对应括号
-set matchtime=3     "跳转到匹配括号的时间
-set tags=tags;      "设置ctags
-set hlsearch    "搜索出之后高亮关键词
-set incsearch   "搜索时高亮关键词
-set ignorecase  "搜索时忽略大小写
-au BufNewFile, BufRead *.inc,*.module set filetype=php  "绑定.inc为php文件
-set laststatus=2    "始终显示状态栏,高度为2行
+"启动时自动最大化
+if has("win32")
+    au GUIEnter              * simalt ~x
+endif
+set sessionoptions+=resize   "保存窗口大小
+set autoread                 "设置自动读取文件当外部文件被修改时
+set nobackup                 "取消备份
+set completeopt=longest,menu "关闭智能补全时的预览窗口，这样可以防止闪屏现象
+set mouse=a                  "设置鼠标支持
+set autochdir                "自动切换当前目录为当前文件夹所在的目录
+set bsdir=buffer             "设定文件浏览器目录为当前目录
+set ruler                    "状态标尺，显示当前光标位置的行号、列号，对应的整个文件的百分比
+set scrolloff=5              "设定光标离窗口上下边界5行时窗口自动滚动
+set keywordprg=sdcv          "英文查询词典
+set cmdheight=1              "设置命令行高度为2行
+set cursorline               "高亮显示当前行
+set cursorcolumn             "设置光标列;高亮光标所在列
+set number                   "显示行号
+set wildmenu                 "命令行补全
+set showmatch                "插入括号时短暂跳转到匹配的对应括号
+set matchtime=3              "跳转到匹配括号的时间
+set tags=ctags;               "设置ctags
+set hlsearch                 "搜索出之后高亮关键词
+set incsearch                "搜索时高亮关键词
+set ignorecase               "搜索时忽略大小写
+au BufNewFile, BufRead *.inc,*.module set filetype=php "绑定.inc为php文件
+set laststatus=2             "始终显示状态栏,高度为2行
 syntax enable
 syntax on
 filetype on
@@ -133,7 +144,7 @@ filetype plugin on    "允许使用ftplugin目录下的文件类型特定脚本
 filetype indent on    "允许使用indent目录下的文件类型缩进
 
 "" 设置配色
-set t_Co=256
+"set t_Co=256
 let g:solarized_termcolors=256
 set background=dark
 colorscheme solarized  "inkpot solarized blackboard molokai tango vividchalk desertEx wombat256mod desert murphy
@@ -170,8 +181,6 @@ else
     autocmd! bufwritepost .vimrc source %
 endif
 
-
-
 "##################################
 "############ 编码设置 ############
 "##################################
@@ -188,6 +197,7 @@ set langmenu=zh_cn
 "source $vimruntime/delmenu.vim  "设置中文菜单
 "source $vimruntime/menu.vim
 "language messages zh_cn.utf-8
+
 "##################################
 "########### 缩进设置 #############
 "##################################
@@ -203,11 +213,13 @@ set backspace=2     "使用退格键正常处理indent 、eol、start等
 set whichwrap+=<,>,h,l  "允许退格键、光标键跨越行边界
 set wrap            "自动换行
 set linebreak       "整词换行
+
 "##################################
 "#### buffer 切换
 "##################################
 map <tab> :bn<cr>
 map <s-tab> :bp<cr>
+
 "##################################
 "#tab configuration 快捷切换标签页#
 "##################################
@@ -218,18 +230,22 @@ map <leader>tm :tabmove
 "shift tab pages
 map <left> :tabp<cr>
 map <right> :tabn<cr>
+
 "###################################
-"#########状态栏配色 airline########
+"######  状态栏配色 airline  #######
 "###################################
+let g:airline#extensions#tabline#buffer_idx_mode = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme='solarized'
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = ''
+if has("unix")
+  let g:airline_left_sep = ''
+  let g:airline_left_alt_sep = ''
+  let g:airline_right_sep = ''
+  let g:airline_right_alt_sep = ''
+  let g:airline_symbols.branch = ''
+  let g:airline_symbols.readonly = ''
+  let g:airline_symbols.linenr = ''
+endif
 
 "###################################
 "############# nerd_tree ###########
@@ -242,10 +258,19 @@ nn <silent><f2> :exec("nerdtree ".expand('%:h'))<cr>
 "############# gundo ###############
 "###################################
 "撤销持久化设置
-set undofile
-set undodir=~/.vim/undodir
-set undolevels=1000
-nnoremap <f12> :gundotoggle<cr>
+"set undofile
+"set undodir=~/.vim/undodir
+"set undolevels=1000
+"nnoremap <f12> :GundoToggle<cr>
+
+"###################################
+"########### UndoTree ##############
+"###################################
+let g:undotree_WindowLayout=4
+let g:undotree_SplitWidth=30
+let g:undotree_SetFocusWhenToggle=1
+nnoremap <F12> :UndotreeToggle<cr>
+
 "###################################
 "########### neocomplcache #########
 "###################################
@@ -298,7 +323,7 @@ autocmd filetype xml           setlocal omnifunc=xmlcomplete#completetags
 if !exists('g:neocomplete#sources#omni#input_patterns')
 let g:neocomplete#sources#omni#input_patterns = {}
 endif
-let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+
 "##############################
 "######### neosnippet #########
 "##############################
@@ -340,17 +365,27 @@ map <F8> :BufExplorer<cr>
 "############ CtrlP ################
 "###################################
 map <leader>f :CtrlPMRUFiles<CR>
-let g:ctrlp_map = '<c-p>'
+"let g:ctrlp_map = '<leader>p'
 let g:ctrlp_custom_ignore = {
     \ 'dir':  '\v[\/]\.(git|hg|svn)$',
     \ 'file': '\v\.(exe|so|dll)$',
     \ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
     \ }
 "###################################
+"############ Unite ################
+"###################################
+"nnoremap <leader>f :Unite file_rec<CR>
+"nnoremap <leader>f :Unite -start-insert file_rec<CR>
+let g:unite_source_history_yank_enable = 1
+nnoremap <F5> :<C-u>Unite history/yank<CR>
+nnoremap <silent> <F8> :<C-u>Unite buffer bookmark<CR>
+
+"###################################
+"###################################
 "############ YankRing #############
 "###################################
-let g:yankring_replace_n_pkey = '<m-p>'
-let g:yankring_replace_n_nkey = '<m-n>'
+let g:yankring_replace_n_pkey = ''
+let g:yankring_replace_n_nkey = ''
 nnoremap <silent> <F11> :YRShow<CR>
 
 "###################################
@@ -366,7 +401,6 @@ nnoremap <silent> <F11> :YRShow<CR>
 let g:auto_color=1
 let g:color_x11_names=1
 nmap <Leader>ch :ColorHighlight<cr>
-let g:airline#extensions#tabline#buffer_idx_mode = 1
 
 "###################################
 "######### syntastic ###############
