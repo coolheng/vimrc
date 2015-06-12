@@ -50,82 +50,61 @@
 "^    跳转至行第一个非空字符
 "$    跳转至行尾
 
+filetype off                   " required!
 set nocompatible               " 关闭兼容模式
+if has("win32")
+    let $VIMFILES = $VIM.'/vimfiles'
+else
+    let $VIMFILES = $HOME.'/.vim'
+endif
 "####################################
 "#"""""""""""" vundle """"""""""""""#
 "####################################
-filetype off                   " required!
-
 if has("win32")
-    set rtp+=$VIM\plugins\Vundle.vim
+    set rtp+=$VIMFILES\bundle\Vundle\
 else
     set rtp+=~/.vim/bundle/vundle
 endif
 
-call vundle#begin()
+call vundle#begin('$VIMFILES\bundle\')
 " vim-scripts repos
-Bundle 'gmarik/vundle'
-"buffer管理
-Bundle 'jlanzarotta/bufexplorer.git'
-"补全
-Bundle 'mattn/emmet-vim.git'
-Bundle 'Shougo/neocomplete'
-Bundle 'Shougo/neosnippet-snippets'
-Bundle 'Shougo/neosnippet'
-Bundle 'jiangmiao/auto-pairs.git'
-"Bundle  'jinja.vim'
-"语法检查
-Bundle 'scrooloose/syntastic.git'
-"代码树
-Bundle 'majutsushi/tagbar'
-"增强%匹配跳转，支持HTML等
-Bundle 'matchit.zip'
-"快速删除配对标签
-Bundle 'tpope/vim-surround.git'
-"撤销持久化
-if has("unix")
-Bundle 'sjl/Gundo.vim.git'
+Plugin 'gmarik/vundle'
+Plugin 'jlanzarotta/bufexplorer.git'          "buffer管理
+"Plugin 'auto_mkdir'                           "自动创建文件夹
+Plugin 'mattn/emmet-vim.git'                  "自动补全
+Plugin 'Shougo/neocomplete'
+Plugin 'Shougo/neosnippet-snippets'
+Plugin 'Shougo/neosnippet'
+Plugin 'jiangmiao/auto-pairs.git'
+"Plugin  'jinja.vim'
+Plugin 'scrooloose/syntastic.git'             "语法检查
+Plugin 'majutsushi/tagbar'                    "代码树
+Plugin 'matchit.zip'                          "增强%匹配跳转，支持HTML等
+Plugin 'tpope/vim-surround.git'               "快速删除配对标签
+if has("unix")                                "撤销持久化
+Plugin 'sjl/Gundo.vim.git'
 elseif has("win32")
-Bundle 'mbbill/undotree'
+Plugin 'mbbill/undotree'
 endif
-"自动保存
-Bundle '907th/vim-auto-save.git'
-"强化搜索
-Bundle 'kien/ctrlp.vim'
-Bundle 'Shougo/unite.vim'
-"Bundle 'Shougo/neomru.vim'
-"Bundle 'yegappan/mru.git'
-"文件管理器
-Bundle 'scrooloose/nerdtree.git'
-Bundle 'scrooloose/nerdcommenter.git'
-"剪切板增强
-Bundle 'YankRing.vim'
-"代码对齐
-Bundle 'junegunn/vim-easy-align'
-"颜色代码高亮
-Bundle 'chrisbra/color_highlight'
-"状态栏配色
-Bundle 'bling/vim-airline'
-"配色
-Bundle 'altercation/vim-colors-solarized.git'
-"Bundle 'tomasr/molokai.git'
-"Bundle 'tpope/vim-vividchalk.git'
-"Bundle 'vim-scripts/tango.vim.git'
-"Bundle 'desertEx'
-"Bundle 'blackboard.vim'
-"Bundle 'Guardian'
-"Bundle 'blackboard'
-"Bundle 'inkpot'
-"Bundle 'chriskempson/tomorrow-theme'
-"Bundle 'Lokaltog/vim-distinguished'
-"Bundle 'Suave/vim-colors-guardian'
-"命令行补全
-"Bundle 'CmdlineComplete'
-"自动创建文件夹
-Bundle 'auto_mkdir'
-"自动关闭标签
-"Bundle 'closetag.vim'
-"Bundle 'genutils'
+Plugin '907th/vim-auto-save.git'              "自动保存
+Plugin 'kien/ctrlp.vim'                       "强化搜索
+Plugin 'Shougo/unite.vim'
+Plugin 'scrooloose/nerdtree.git'              "文件管理器
+Plugin 'scrooloose/nerdcommenter.git'         "注释
+Plugin 'YankRing.vim'                         "剪切板增强
+Plugin 'junegunn/vim-easy-align'              "代码对齐
+Plugin 'chrisbra/color_highlight'             "颜色代码高亮
+Plugin 'bling/vim-airline'                    "状态栏配色,增加buffer栏
+Plugin 'altercation/vim-colors-solarized.git' "配色
+Plugin 'vimcn/vimcdoc'                        "中文文档
+Plugin 'vimcn/nerd_tree.vim.cnx'
+Plugin 'vimcn/syntastic.cnx'
+Plugin 'vimcn/nerd_commenter.cnx'
+Plugin 'vimcn/tagbar.cnx'
+Plugin 'vimcn/ctrlp.cnx'
+Plugin 'vimcn/bufexplorer.vim.cnx'
+Plugin 'vimcn/matchit.vim.cnx'
+Plugin 'vimcn/vimwiki.vim.cnx'
 call vundle#end()
 
 if has("gui_running")
@@ -138,38 +117,39 @@ if has("gui_running")
     set guioptions-=R
 endif
 
+set cc=80
 "启动时自动最大化
 if has("win32")
     au GUIEnter              * simalt ~x
 endif
-set sessionoptions+=resize   "保存窗口大小
-set autoread                 "设置自动读取文件当外部文件被修改时
-set nobackup                 "取消备份
-set completeopt=longest,menu "关闭智能补全时的预览窗口，这样可以防止闪屏现象
-set mouse=a                  "设置鼠标支持
-set autochdir                "自动切换当前目录为当前文件夹所在的目录
-set bsdir=buffer             "设定文件浏览器目录为当前目录
-set ruler                    "状态标尺，显示当前光标位置的行号、列号，对应的整个文件的百分比
-set scrolloff=5              "设定光标离窗口上下边界5行时窗口自动滚动
-set keywordprg=sdcv          "英文查询词典
-set cmdheight=1              "设置命令行高度为2行
-set cursorline               "高亮显示当前行
-set cursorcolumn             "设置光标列;高亮光标所在列
-set number                   "显示行号
-set wildmenu                 "命令行补全
-set showmatch                "插入括号时短暂跳转到匹配的对应括号
-set matchtime=3              "跳转到匹配括号的时间
-set tags=ctags;               "设置ctags
-set hlsearch                 "搜索出之后高亮关键词
-set incsearch                "搜索时高亮关键词
-set ignorecase               "搜索时忽略大小写
-au BufNewFile, BufRead *.inc,*.module set filetype=php "绑定.inc为php文件
-set laststatus=2             "始终显示状态栏,高度为2行
 syntax enable
 syntax on
 filetype on
-filetype plugin on    "允许使用ftplugin目录下的文件类型特定脚本
-filetype indent on    "允许使用indent目录下的文件类型缩进
+filetype plugin indent on    "允许使用indent目录下的文件类型缩进
+filetype plugin on           "允许使用ftplugin目录下的文件类型特定脚本
+set sessionoptions+=resize   "保存窗口大小
+set autoread        "设置自动读取文件当外部文件被修改时
+set nobackup        "取消备份
+set completeopt=longest,menu "关闭智能补全时的预览窗口，这样可以防止闪屏现象
+set mouse=a         "设置鼠标支持
+set autochdir       "自动切换当前目录为当前文件夹所在的目录
+set bsdir=buffer    "设定文件浏览器目录为当前目录
+set ruler           "状态标尺，显示当前光标位置的行号、列号，对应的整个文件的百分比
+set scrolloff=5     "设定光标离窗口上下边界5行时窗口自动滚动
+set keywordprg=sdcv "英文查询词典
+set cmdheight=1     "设置命令行高度为2行
+set cursorline      "高亮显示当前行
+set cursorcolumn    "设置光标列;高亮光标所在列
+set number          "显示行号
+set wildmenu        "命令行补全
+set showmatch       "插入括号时短暂跳转到匹配的对应括号
+set matchtime=3     "跳转到匹配括号的时间
+set tags=ctags;     "设置ctags
+set hlsearch        "搜索出之后高亮关键词
+set incsearch       "搜索时高亮关键词
+set ignorecase      "搜索时忽略大小写
+au BufNewFile,BufRead *.inc,*.module set filetype=php "绑定.inc为php文件
+set laststatus=2             "始终显示状态栏,高度为2行
 
 "" 设置配色
 set t_Co=256
@@ -179,7 +159,9 @@ colorscheme solarized  "inkpot solarized blackboard molokai tango vividchalk des
 
 "" 设置字体"
 if has("win32")
-    set guifont=Dejavu\ sans\ mono:h10:cANSI
+    "set guifont=DejaVu\ Sans\ Mono:h10:cANSI
+    set guifont=DejaVu\ Sans\ Mono\ For\ Powerline:h10:cANSI
+    "set guifont=inconsolata-g\ for\ powerline:h10:cANSI
     set gfw=youyuan:h10:cGB2312
 else
     set guifont=Dejavu\ sans\ mono\ 10.5
@@ -195,7 +177,7 @@ let g:mapleader=","
 nmap <leader>w :w<cr>
 
 if has("win32")
-    map <silent> <leader>e :e $VIM/_vimrc<cr>
+    map <silent> <leader>e :e $VIM/.vimrc<cr>
     autocmd! bufwritepost .vimrc source %   "自动调用新的vimrc
 else
     map <silent> <leader>e :e ~/.vimrc<cr>
@@ -206,9 +188,9 @@ endif
 "############ 编码设置 ############
 "##################################
 set encoding=utf-8              "默认显示的文件编码
-if has("win32")
-    set termencoding=gbk
-endif
+"if has("win32")
+"    set termencoding=gbk
+"endif
 set fileencoding=utf-8          "新建和保存文件时使用的编码
 set fileencodings=utf-8,gb2312,gbk,chinese,utf-16,gb18030,big5,latin1,ansi,ucs-bom,cp939    "此项目配置的是一个编码列表，vim在读取文件的时候，会根据这里的编码自动检测，如果检测失败则尝试下一个，直到检测成功为止。如果一直没有转换成功，则此值会为空
 set helplang=cn         "中文帮助文档
@@ -256,22 +238,25 @@ map <right> :tabn<cr>
 "######  状态栏配色 airline  #######
 "###################################
 let g:airline#extensions#tabline#buffer_idx_mode = 1
+let g:airline#extensions#tagbar#flags = ''
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#syntastic#enabled = 1
 let g:airline_theme='solarized'
 autocmd! bufwritepost .vimrc  AirlineRefresh
 let g:airline_powerline_fonts=1
-"if !exists('g:airline_symbols')
-"    let g:airline_symbols = {}
-"endif
-"if has("unix")
-"  let g:airline_left_sep = ''
-"  let g:airline_left_alt_sep = ''
-"  let g:airline_right_sep = ''
-"  let g:airline_right_alt_sep = ''
-"  let g:airline_symbols.branch = ''
-"  let g:airline_symbols.readonly = ''
-"  let g:airline_symbols.linenr = ''
-"endif
+
+"bufferline
+"let g:airline#extensions#bufferline#enabled = 1
+"let g:airline#extensions#bufferline#overwrite_variables = 1
+"let g:bufferline_echo = 1
+"let g:bufferline_active_buffer_left = '['
+"let g:bufferline_active_buffer_left = ']'
+"let g:bufferline_modified = '+'
+"let g:bufferline_solo_highlight = 0
+"let g:bufferline_active_highlight = 'StatusLine'
+"let g:bufferline_inactive_highlight = 'StatusLineNC'
+"let g:bufferline_excludes = []
+
 
 "###################################
 "############# nerd_tree ###########
@@ -282,23 +267,28 @@ imap <F4> <esc> :NERDTreeToggle<cr>
 nn <silent><f2> :exec("nerdtree ".expand('%:h'))<cr>
 
 
+if has("win32")
+    set directory=$VIMFILES/tmp
+else
+    set directory=~/.tmp
+endif
+
 "撤销持久化设置
-if has("unix")
-"###################################
-"############# gundo ###############
-"###################################
-set undofile
-set undodir=~/.vim/undodir
-set undolevels=1000
-nnoremap <F12> :GundoToggle<cr>
-elseif has("win32")
-"###################################
-"########### UndoTree ##############
-"###################################
-let g:undotree_WindowLayout=4
-let g:undotree_SplitWidth=30
-let g:undotree_SetFocusWhenToggle=1
-nnoremap <F12> :UndotreeToggle<cr>
+if has("persistent_undo")
+    set undofile
+    set undolevels=1000
+
+    if has("win32")
+        set undodir=$VIMFILES/undodir
+        au BufWritePre undodir/* setlocal noundofile
+        let g:undotree_WindowLayout=4
+        let g:undotree_SplitWidth=30
+        let g:undotree_SetFocusWhenToggle=1
+        nnoremap <F12> :UndotreeToggle<cr>
+    else
+        nnoremap <F12> :GundoToggle<cr>
+        au BufWritePre ~/.undodir/* setlocal noundofile
+    endif
 endif
 
 "###################################
@@ -401,6 +391,14 @@ let g:ctrlp_custom_ignore = {
     \ 'dir':  '\v[\/]\.(git|hg|svn)$',
     \ 'file': '\v\.(exe|so|dll)$',
     \ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
+    \ }
+"let g:ctrlp_user_command = [root_marker, listing_command, fallback_command]
+let g:ctrlp_user_command = {
+    \ 'types': {
+      \ 1: ['.git', 'cd %s && git ls-files'],
+      \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+      \ },
+    \ 'fallback': 'find %s -type f'
     \ }
 
 "###################################
