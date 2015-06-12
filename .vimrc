@@ -4,10 +4,9 @@
 "<F9>:          TagbarToggle<CR>
 "<F11>:         YRShow<CR> 剪切板
 "<F12>:         UndotreeToggle<CR> 撤销持久化
-"<leader>f:     MRU 最近打开的文件
-",,:            CtrlP 停用
+"<Leader>f:     CtrlPMRUFiles
 
-"ctrlp快捷键
+"CtrlP快捷键
 "<c-f><c-b>     切换模式
 "<c-d>          切换按全路径或文件名查找
 "<c-r>          改变regexp模式
@@ -24,6 +23,32 @@
 "<Leader>cu     撤销注释
 "<Leader>cm     多行注释
 "<Leader>cs     性感的注释方式
+
+"跳转
+"%    跳转到相配对的括号
+"gD   跳转到局部变量的定义处
+"''   跳转到光标上次停靠的地方, 是两个',而不是一个"
+"mx   设置书签,x只能是a-z的26个字母
+"`x   跳转到书签处("`"是1左边的键)
+">    增加缩进,"x>"表示增加以下x行的缩进
+"<    减少缩进,"x<"表示减少以下x行的缩进
+"
+"{    跳到上一段的开头
+"}    跳到下一段的的开头
+"(    移到这个句子的开头
+")    移到下一个句子的开头
+"
+"[[   跳转至上一个函数(要求代码块中'{'必须单独占一行)
+"]]   跳转至下一个函数(要求代码块中'{'必须单独占一行)
+"
+"C-]  跳转至函数或变量定义处
+"C-O  返回跳转前位置
+"C-T  同上
+"nC-T 返回跳转 n 次
+"
+"0    数字0,跳转至行首
+"^    跳转至行第一个非空字符
+"$    跳转至行尾
 
 set nocompatible               " 关闭兼容模式
 "####################################
@@ -58,10 +83,14 @@ Bundle 'matchit.zip'
 "快速删除配对标签
 Bundle 'tpope/vim-surround.git'
 "撤销持久化
-"Bundle 'sjl/Gundo.vim.git'
+if has("unix")
+Bundle 'sjl/Gundo.vim.git'
+elseif has("win32")
 Bundle 'mbbill/undotree'
+endif
 "自动保存
 Bundle '907th/vim-auto-save.git'
+"强化搜索
 Bundle 'kien/ctrlp.vim'
 Bundle 'Shougo/unite.vim'
 "Bundle 'Shougo/neomru.vim'
@@ -79,24 +108,23 @@ Bundle 'chrisbra/color_highlight'
 Bundle 'bling/vim-airline'
 "配色
 Bundle 'altercation/vim-colors-solarized.git'
-Bundle 'tomasr/molokai.git'
-Bundle 'desertEx'
+"Bundle 'tomasr/molokai.git'
 "Bundle 'tpope/vim-vividchalk.git'
-"Bundle 'blackboard.vim'
 "Bundle 'vim-scripts/tango.vim.git'
+"Bundle 'desertEx'
+"Bundle 'blackboard.vim'
 "Bundle 'Guardian'
 "Bundle 'blackboard'
 "Bundle 'inkpot'
 "Bundle 'chriskempson/tomorrow-theme'
 "Bundle 'Lokaltog/vim-distinguished'
 "Bundle 'Suave/vim-colors-guardian'
-
 "命令行补全
-Bundle 'CmdlineComplete'
+"Bundle 'CmdlineComplete'
 "自动创建文件夹
 Bundle 'auto_mkdir'
 "自动关闭标签
-Bundle 'closetag.vim'
+"Bundle 'closetag.vim'
 "Bundle 'genutils'
 call vundle#end()
 
@@ -144,7 +172,7 @@ filetype plugin on    "允许使用ftplugin目录下的文件类型特定脚本
 filetype indent on    "允许使用indent目录下的文件类型缩进
 
 "" 设置配色
-"set t_Co=256
+set t_Co=256
 let g:solarized_termcolors=256
 set background=dark
 colorscheme solarized  "inkpot solarized blackboard molokai tango vividchalk desertEx wombat256mod desert murphy
@@ -158,13 +186,6 @@ else
 "    set guifont=monaco\ 10.5
     set gfw=youyuan\ 11
 endif
-
-""工作目录"
-" if has("win32")
-"     cd e:/workspace
-" else
-"     cd /var/www
-" endif
 
 "###################################
 "####### 快捷编辑Vimrc文件 #########
@@ -251,18 +272,21 @@ endif
 "############# nerd_tree ###########
 "###################################
 let nerdtreewinsize=27
-nmap <f4> :NERDTreeToggle<cr>
-imap <f4> <esc> :NERDTreeToggle<cr>
+nmap <F4> :NERDTreeToggle<cr>
+imap <F4> <esc> :NERDTreeToggle<cr>
 nn <silent><f2> :exec("nerdtree ".expand('%:h'))<cr>
+
+
+"撤销持久化设置
+if has("unix")
 "###################################
 "############# gundo ###############
 "###################################
-"撤销持久化设置
-"set undofile
-"set undodir=~/.vim/undodir
-"set undolevels=1000
-"nnoremap <f12> :GundoToggle<cr>
-
+set undofile
+set undodir=~/.vim/undodir
+set undolevels=1000
+nnoremap <F12> :GundoToggle<cr>
+elseif has("win32")
 "###################################
 "########### UndoTree ##############
 "###################################
@@ -270,6 +294,7 @@ let g:undotree_WindowLayout=4
 let g:undotree_SplitWidth=30
 let g:undotree_SetFocusWhenToggle=1
 nnoremap <F12> :UndotreeToggle<cr>
+endif
 
 "###################################
 "########### neocomplcache #########
@@ -359,7 +384,8 @@ let g:bufExplorerSplitVertical=1
 let g:bufExplorerSplitVertSize=30
 let g:bufExplorerCurrentWindow=1
 let bufExplorerResize=0
-map <F8> :BufExplorer<cr>
+"nnoremap <silent> <F8> :BufExplorerVerticalSplit<CR>
+map <F8> :ToggleBufExplorer<cr>
 
 "###################################
 "############ CtrlP ################
@@ -371,14 +397,15 @@ let g:ctrlp_custom_ignore = {
     \ 'file': '\v\.(exe|so|dll)$',
     \ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
     \ }
+
 "###################################
 "############ Unite ################
 "###################################
 "nnoremap <leader>f :Unite file_rec<CR>
 "nnoremap <leader>f :Unite -start-insert file_rec<CR>
-let g:unite_source_history_yank_enable = 1
-nnoremap <F5> :<C-u>Unite history/yank<CR>
-nnoremap <silent> <F8> :<C-u>Unite buffer bookmark<CR>
+"let g:unite_source_history_yank_enable = 1
+"nnoremap <F5> :<C-u>Unite history/yank<CR>
+"nnoremap <silent> <F8> :<C-u>Unite buffer bookmark<CR>
 
 "###################################
 "###################################
