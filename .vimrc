@@ -57,7 +57,7 @@ let g:iswindows=0
 let g:islinux=0
 if(has("win32") || has("win64") || has("win95") || has("win16") || has("win32unix"))
     let g:iswindows=1
-else
+elseif has("unix")
     let g:islinux=1
 endif
 
@@ -77,18 +77,13 @@ filetype off
 set nocompatible                             "关闭兼容模式
 
 if g:iswindows
-    let $VIMFILES = $VIM.'/vimfiles'          "设置Windows下$VIMFILES路径
-else
-    let $VIMFILES = $HOME.'/.vim'            "设置Linux下$VIMFILES路径
+    let $VIMFILES = $VIM.'/vimfiles/'          "设置Windows下$VIMFILES路径
+elseif g:islinux
+    let $VIMFILES = $HOME.'/.vim/'            "设置Linux下$VIMFILES路径
 endif
 
-if g:iswindows
-    set rtp+=$VIMFILES\bundle\Vundle\
-else
-    set rtp+=~/.vim/bundle/vundle
-endif
-
-call vundle#begin('$VIMFILES\bundle\')
+set rtp+=$VIMFILES/bundle/vundle
+call vundle#begin('$VIMFILES/bundle/')
 " vim-scripts repos
 Plugin 'gmarik/vundle'
 Plugin 'jlanzarotta/bufexplorer.git'          "buffer管理
