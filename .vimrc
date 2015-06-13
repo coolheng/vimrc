@@ -138,8 +138,10 @@ if has("gui_running")
     set guioptions-=L
     set guioptions-=R
 endif
+
+"打开时最大化
 if g:iswindows
-    au GUIEnter              * simalt ~x
+    au GUIEnter * simalt ~x
 endif
 syntax enable
 syntax on
@@ -216,9 +218,11 @@ set helplang=cn         "中文帮助文档
 set fileformat=unix
 set fileformats=unix,dos,mac
 set langmenu=zh_cn
-"source $vimruntime/delmenu.vim  "设置中文菜单
-"source $vimruntime/menu.vim
-"language messages zh_cn.utf-8
+if (g:iswindows && g:isGUI)
+    source $vimruntime/delmenu.vim  "解决菜单乱码问题
+    source $vimruntime/menu.vim
+    language messages zh_cn.utf-8 解决consle输出乱码
+endif
 
 "##################################
 "########### 缩进设置 #############
