@@ -2,7 +2,7 @@
 "<F4>:          NERDTreeToggle<CR>
 "<F8>:          BufExplorer<CR>
 "<F9>:          TagbarToggle<CR>
-"<F11>:         YRShow<CR> 剪切板
+"<F11>:         YRShow<CR> 曾强剪切板
 "<F12>:         UndotreeToggle<CR> 撤销持久化
 "<Leader>f:     CtrlPMRUFiles
 
@@ -49,18 +49,40 @@
 "0    数字0,跳转至行首
 "^    跳转至行第一个非空字符
 "$    跳转至行尾
-
-filetype off                   " required!
-set nocompatible               " 关闭兼容模式
-if has("win32")
-    let $VIMFILES = $VIM.'/vimfiles'
+"
+"--------------------------------------------------
+"   < 判断操作系统是否是 Windows 还是 Linux >
+"--------------------------------------------------
+let g:iswindows=0
+let g:islinux=0
+if(has("win32") || has("win64") || has("win95") || has("win16") || has("win32unix"))
+    let g:iswindows=1
 else
-    let $VIMFILES = $HOME.'/.vim'
+    let g:islinux=1
 endif
+
+"--------------------------------------------------
+"   < 判断是终端还是 Gvim >
+"--------------------------------------------------
+if has("gui_running")
+    let g:isGUI=1
+else
+    let g:isGUI=0
+endif
+
 "####################################
 "#"""""""""""" vundle """"""""""""""#
 "####################################
-if has("win32")
+filetype off
+set nocompatible                             "关闭兼容模式
+
+if g:iswindows
+    let $VIMFILES = $VIM.'/vimfiles'          "设置Windows下$VIMFILES路径
+else
+    let $VIMFILES = $HOME.'/.vim'            "设置Linux下$VIMFILES路径
+endif
+
+if g:iswindows
     set rtp+=$VIMFILES\bundle\Vundle\
 else
     set rtp+=~/.vim/bundle/vundle
@@ -81,9 +103,9 @@ Plugin 'scrooloose/syntastic.git'             "语法检查
 Plugin 'majutsushi/tagbar'                    "代码树
 Plugin 'matchit.zip'                          "增强%匹配跳转，支持HTML等
 Plugin 'tpope/vim-surround.git'               "快速删除配对标签
-if has("unix")                                "撤销持久化
+if g:islinux                                "撤销持久化
 Plugin 'sjl/Gundo.vim.git'
-elseif has("win32")
+elseif g:iswindows
 Plugin 'mbbill/undotree'
 endif
 Plugin '907th/vim-auto-save.git'              "自动保存
@@ -116,10 +138,7 @@ if has("gui_running")
     set guioptions-=L
     set guioptions-=R
 endif
-
-set cc=80
-"启动时自动最大化
-if has("win32")
+if g:iswindows
     au GUIEnter              * simalt ~x
 endif
 syntax enable
@@ -144,7 +163,7 @@ set number          "显示行号
 set wildmenu        "命令行补全
 set showmatch       "插入括号时短暂跳转到匹配的对应括号
 set matchtime=3     "跳转到匹配括号的时间
-set tags=ctags;     "设置ctags
+set tags=tags;     "设置ctags
 set hlsearch        "搜索出之后高亮关键词
 set incsearch       "搜索时高亮关键词
 set ignorecase      "搜索时忽略大小写
@@ -158,7 +177,7 @@ set background=dark
 colorscheme solarized  "inkpot solarized blackboard molokai tango vividchalk desertEx wombat256mod desert murphy
 
 "" 设置字体"
-if has("win32")
+if g:iswindows
     "set guifont=DejaVu\ Sans\ Mono:h10:cANSI
     set guifont=DejaVu\ Sans\ Mono\ For\ Powerline:h10:cANSI
     "set guifont=inconsolata-g\ for\ powerline:h10:cANSI
@@ -176,7 +195,7 @@ let mapleader=","       "设置逗号','为 mapleader
 let g:mapleader=","
 nmap <leader>w :w<cr>
 
-if has("win32")
+if g:iswindows
     map <silent> <leader>e :e $VIM/.vimrc<cr>
     autocmd! bufwritepost .vimrc source %   "自动调用新的vimrc
 else
@@ -188,7 +207,7 @@ endif
 "############ 编码设置 ############
 "##################################
 set encoding=utf-8              "默认显示的文件编码
-"if has("win32")
+"if g:iswindows
 "    set termencoding=gbk
 "endif
 set fileencoding=utf-8          "新建和保存文件时使用的编码
@@ -267,7 +286,7 @@ imap <F4> <esc> :NERDTreeToggle<cr>
 nn <silent><f2> :exec("nerdtree ".expand('%:h'))<cr>
 
 
-if has("win32")
+if g:iswindows
     set directory=$VIMFILES/tmp
 else
     set directory=~/.tmp
@@ -278,7 +297,7 @@ if has("persistent_undo")
     set undofile
     set undolevels=1000
 
-    if has("win32")
+    if g:iswindows
         set undodir=$VIMFILES/undodir
         au BufWritePre undodir/* setlocal noundofile
         let g:undotree_WindowLayout=4
@@ -334,7 +353,7 @@ inoremap <expr><bs>  neocomplete#smart_close_popup()."\<c-h>"
 inoremap <expr><c-y> neocomplete#close_popup()
 inoremap <expr><c-e> neocomplete#cancel_popup()
 " enable omni completion.
-autocmd filetype css           setlocal omnifunc=csscomplete#completecss
+autocmd filetype css,less      setlocal omnifunc=csscomplete#completecss
 autocmd filetype html,markdown setlocal omnifunc=htmlcomplete#completetags
 autocmd filetype javascript    setlocal omnifunc=javascriptcomplete#completejs
 autocmd filetype python        setlocal omnifunc=pythoncomplete#complete
@@ -428,8 +447,9 @@ nnoremap <silent> <F11> :YRShow<CR>
 "###################################
 "######### color_highlight #########
 "###################################
-let g:auto_color=1
+let g:coloriz_auto_color = 1
 let g:color_x11_names=1
+let g:colorizer_auto_filetype='css,html,less'
 nmap <Leader>ch :ColorHighlight<cr>
 
 "###################################
