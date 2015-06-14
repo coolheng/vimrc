@@ -87,7 +87,6 @@ call vundle#begin('$VIMFILES/bundle/')
 " vim-scripts repos
 Plugin 'gmarik/vundle'
 Plugin 'jlanzarotta/bufexplorer.git'          "buffer管理
-"Plugin 'auto_mkdir'                           "自动创建文件夹
 Plugin 'mattn/emmet-vim.git'                  "自动补全
 Plugin 'Shougo/neocomplete'
 Plugin 'Shougo/neosnippet-snippets'
@@ -98,7 +97,7 @@ Plugin 'scrooloose/syntastic.git'             "语法检查
 Plugin 'majutsushi/tagbar'                    "代码树
 Plugin 'matchit.zip'                          "增强%匹配跳转，支持HTML等
 Plugin 'tpope/vim-surround.git'               "快速删除配对标签
-if g:islinux                                "撤销持久化
+if g:islinux                                  "撤销持久化
 Plugin 'sjl/Gundo.vim.git'
 elseif g:iswindows
 Plugin 'mbbill/undotree'
@@ -303,9 +302,10 @@ if has("persistent_undo")
         let g:undotree_SplitWidth=30
         let g:undotree_SetFocusWhenToggle=1
         nnoremap <F12> :UndotreeToggle<cr>
-    else
+    elseif g:islinux
+        set undodir=~/.undodir/
         nnoremap <F12> :GundoToggle<cr>
-        au BufWritePre ~/.undodir/* setlocal noundofile
+        au BufWritePre ~/.undodir/ setlocal noundofile
     endif
 endif
 
@@ -398,7 +398,7 @@ let g:bufExplorerSplitVertSize=30
 let g:bufExplorerCurrentWindow=1
 let bufExplorerResize=0
 "nnoremap <silent> <F8> :BufExplorerVerticalSplit<CR>
-map <F8> :ToggleBufExplorer<cr>
+nnoremap <silent> <F8> :ToggleBufExplorer<cr>
 
 "###################################
 "############ CtrlP ################
@@ -435,13 +435,6 @@ let g:ctrlp_user_command = {
 let g:yankring_replace_n_pkey = ''
 let g:yankring_replace_n_nkey = ''
 nnoremap <silent> <F11> :YRShow<CR>
-
-"###################################
-"############## MRU ################
-"###################################
-"set history=500
-"let MRU_Max_Entries=400
-"map <leader>f :MRU<CR>
 
 "###################################
 "######### color_highlight #########
