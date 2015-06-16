@@ -215,7 +215,7 @@ set langmenu=zh_cn
 if (g:iswindows && g:isGUI)
     source $vimruntime/delmenu.vim  "解决菜单乱码问题
     source $vimruntime/menu.vim
-    language messages zh_cn.utf-8 解决consle输出乱码
+    language messages zh_cn.utf-8 "解决consle输出乱码
 endif
 
 "##################################
