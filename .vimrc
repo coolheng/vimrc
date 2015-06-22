@@ -109,7 +109,11 @@ Plugin 'scrooloose/nerdtree.git'              "文件管理器
 Plugin 'scrooloose/nerdcommenter.git'         "注释
 Plugin 'YankRing.vim'                         "剪切板增强
 Plugin 'junegunn/vim-easy-align'              "代码对齐
-Plugin 'chrisbra/color_highlight'             "颜色代码高亮
+"Plugin 'chrisbra/color_highlight'             "颜色代码高亮
+"Plugin 'skammer/vim-css-color'
+Plugin 'chrisbra/colorizer.git'
+Plugin 'groenewege/vim-less.git'
+Plugin 'hail2u/vim-css3-syntax.git'
 Plugin 'bling/vim-airline'                    "状态栏配色,增加buffer栏
 Plugin 'altercation/vim-colors-solarized.git' "配色
 Plugin 'vimcn/vimcdoc'                        "中文文档
@@ -192,11 +196,11 @@ let g:mapleader=","
 nmap <leader>w :w<cr>
 
 if g:iswindows
-    map <silent> <leader>e :e $VIM/.vimrc<cr>
-    autocmd! bufwritepost .vimrc source %   "自动调用新的vimrc
+    map <silent> <leader>e :e $VIM/_vimrc<cr>
+    autocmd! bufwritepost _vimrc source $VIM/_vimrc   "自动调用新的vimrc
 else
     map <silent> <leader>e :e ~/.vimrc<cr>
-    autocmd! bufwritepost .vimrc source %
+    autocmd! bufwritepost .vimrc source ~/.vimrc   "自动调用新的vimrc
 endif
 
 "##################################
@@ -259,7 +263,7 @@ let g:airline#extensions#tagbar#flags = ''
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline_theme='solarized'
-autocmd! bufwritepost .vimrc  AirlineRefresh
+autocmd! bufwritepost _vimrc  AirlineRefresh
 let g:airline_powerline_fonts=1
 
 "bufferline
@@ -404,20 +408,17 @@ nnoremap <silent> <F8> :ToggleBufExplorer<cr>
 "############ CtrlP ################
 "###################################
 map <leader>f :CtrlPMRUFiles<CR>
-"let g:ctrlp_map = '<leader>p'
+let g:ctrlp_map = '<leader>p'
 let g:ctrlp_custom_ignore = {
     \ 'dir':  '\v[\/]\.(git|hg|svn)$',
     \ 'file': '\v\.(exe|so|dll)$',
     \ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
     \ }
-"let g:ctrlp_user_command = [root_marker, listing_command, fallback_command]
-let g:ctrlp_user_command = {
-    \ 'types': {
-      \ 1: ['.git', 'cd %s && git ls-files'],
-      \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-      \ },
-    \ 'fallback': 'find %s -type f'
-    \ }
+if g:iswindows
+    let g:ctrlp_user_command = 'dir %s /-n /b /s /a-d' " Windows
+else
+    let g:ctrlp_user_command = 'find %s -type f'       " MacOSX/Linux
+endif
 
 "###################################
 "############ Unite ################
@@ -429,7 +430,6 @@ let g:ctrlp_user_command = {
 "nnoremap <silent> <F8> :<C-u>Unite buffer bookmark<CR>
 
 "###################################
-"###################################
 "############ YankRing #############
 "###################################
 let g:yankring_replace_n_pkey = ''
@@ -439,10 +439,19 @@ nnoremap <silent> <F11> :YRShow<CR>
 "###################################
 "######### color_highlight #########
 "###################################
-let g:coloriz_auto_color = 1
-let g:color_x11_names=1
-let g:colorizer_auto_filetype='css,html,less'
-nmap <Leader>ch :ColorHighlight<cr>
+"let g:coloriz_auto_color = 1
+"let g:color_x11_names=1
+"let g:colorizer_auto_filetype='css,html,less'
+"nmap <Leader>ch :ColorHighlight<cr>
+
+"###################################
+"######### vim-css3-syntax #########
+"###################################
+augroup VimCSS3Syntax
+  autocmd!
+
+  autocmd FileType css setlocal iskeyword+=-
+augroup END
 
 "###################################
 "######### syntastic ###############
